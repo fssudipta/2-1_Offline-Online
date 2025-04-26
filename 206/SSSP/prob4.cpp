@@ -41,4 +41,22 @@ int minval(vector<vector<int>>&arr){
             }
         }
     }
+    return -1;
+}
+
+int main()
+{
+    // Example 1
+    vector<vector<int> > arr
+        = { { 1, 2, 2 }, { 3, 8, 2 }, { 5, 3, 5 } };
+    cout << minval(arr) << endl;
+
+    // Example 2
+    arr = { { 1, 2, 1, 1, 1 },
+            { 1, 2, 1, 2, 1 },
+            { 1, 2, 1, 2, 1 },
+            { 1, 1, 1, 2, 1 } };
+    cout << minval(arr) << endl;
+
+    return 0;
 }
