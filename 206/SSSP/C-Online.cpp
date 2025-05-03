@@ -63,7 +63,7 @@ vector<int> dijkstra(int N, vector<vector<pair<int, int> > > &adj) {
     priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
 
     dist[1] = 0; // Start from Lab 1
-    pq.push(make_pair(0, 1));
+    pq.push({0,1});
 
     while (!pq.empty()) {
         pair<int, int> top = pq.top();
@@ -80,7 +80,7 @@ vector<int> dijkstra(int N, vector<vector<pair<int, int> > > &adj) {
 
             if (dist[v] > dist[u] + w) {
                 dist[v] = dist[u] + w;
-                pq.push(make_pair(dist[v], v));
+                pq.push({dist[v], v});
             }
         }
     }
