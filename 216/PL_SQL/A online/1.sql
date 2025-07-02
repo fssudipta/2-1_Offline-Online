@@ -74,30 +74,3 @@ BEGIN
     END LOOP;
 END;
 /
-
--- Test with direct SELECT (this will definitely show results):
- SELECT 
-     'LONGEST SERVING EMPLOYEE' as info_type,
-     e.first_name || ' ' || e.last_name as full_name,
-     j.job_title,
-     TO_CHAR(e.hire_date, 'DD-MON-YYYY') as hire_date,
-     c.country_name,
-     d.department_name,
-     l.city
- FROM employees e
- JOIN departments d ON e.department_id = d.department_id
- JOIN locations l ON d.location_id = l.location_id
- JOIN countries c ON l.country_id = c.country_id
- JOIN regions r ON c.region_id = r.region_id
- JOIN jobs j ON e.job_id = j.job_id
- WHERE UPPER(r.region_name) = 'AMERICAS'
- AND e.hire_date = (
-     SELECT MIN(e2.hire_date)
-     FROM employees e2
-     JOIN departments d2 ON e2.department_id = d2.department_id
-     JOIN locations l2 ON d2.location_id = l2.location_id
-     JOIN countries c2 ON l2.country_id = c2.country_id
-     JOIN regions r2 ON c2.region_id = r2.region_id
-     WHERE UPPER(r2.region_name) = 'AMERICAS'
- )
- AND ROWNUM = 1;

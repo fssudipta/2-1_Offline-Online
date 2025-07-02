@@ -51,6 +51,47 @@ be allowed. However, if the name is invalid, then insertion should be denied. To
 you can throw an exception from the trigger that would halt the insertion operation. 
 */
 
+create or replace trigger invalid_name before
+   insert on students
+   for each row
+declare
+   c varchar2(5);
+begin
+   for i in 1..length(:new.student_name) loop
+      c := substr(
+         :new.student_name,
+         i,
+         1
+      );
+      if not ( ( c between 'A' and 'Z' )
+      or ( c between 'a' and 'z' ) ) then
+         raise_application_error(
+            -20001,
+            'INVALID_NAME_DETECED'
+         );
+      end if;
+   end loop;
+end;
+
+-- Valid insert (should succeed)
+insert into students (
+   student_name,
+   cgpa
+) values ( 'Alice',
+           3.5 );
+
+drop trigger invalid_name;
+
+select *
+  from students;
+
+-- Invalid insert (should fail)
+insert into students (
+   student_name,
+   cgpa
+) values ( 'Alice123',
+           4 );
+
 /*
 Write a trigger that will save a student records in a table named LOW_CGPA_STUDENTS 
 which contain only one column to store student’s names. The trigger will work before an update 
